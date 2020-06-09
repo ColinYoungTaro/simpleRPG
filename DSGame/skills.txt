@@ -1,0 +1,6 @@
+upper_thrust 300 wasdj
+fire_ball 500 wwssk
+roar 500 wsj
+hit 100 aaj
+AMaTeRaSu 9999 wwssafafjkjk
+DragonSlash 9999 adwsadj

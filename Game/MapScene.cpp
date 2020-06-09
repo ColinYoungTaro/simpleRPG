@@ -65,6 +65,7 @@ void MapScene::draw() {
 }
 // 初始化自己的map
 void MapScene::init_maze() {
+	srand(time(0));
 	std::vector<std::vector<int>>& maze = this->tileMap;
 	int i, j, random;
 	for (i = 0; i < w ; i++) {
@@ -117,12 +118,6 @@ void MapScene::init_maze() {
 }
 void MapScene::update() {
 	
-	//if ( player->x == w - 1 && player->y == h - 1) {
-	//	// 内存泄露....
-	//	Role *s = new Role("Dragon");
-	//	CallBattleScene(s);
-	//}
-
 	Scene::update();
 	// 开启寻路模式
 	if (keystate(VK_LBUTTON)) {

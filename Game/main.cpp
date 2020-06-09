@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stack>
 #include <map>
+#include "DataStructure/AvlTree.h"
 using std::string;
 using std::stack;
 using std::map;
@@ -14,33 +15,41 @@ using std::map;
 namespace Global {
 	stack<Scene*> g_sceneStack;
 	map<string, PIMAGE> rsc;
+	AvlTree<string, PIMAGE> resrc;
 }
 // 初始化复用资源
 void initGlobalresource() {
 	using Global::rsc;
+	using Global::resrc;
 	string arr[] =
 	{
 		"bg","block","stone"
 	};
 	for (auto& str : arr) {
-		rsc[str] = newimage();
+		PIMAGE pimg = newimage();
 		string tmpName = "Graphics/Maps/" + str + ".png";
-		getimage(rsc[str],tmpName.c_str());
+		getimage(pimg,tmpName.c_str());
+		resrc.Insert(str, pimg);
 	}
 	string characters[] = {
 		"Devil","Dragon","Bird","Goblin","Undead"
 	};
 	for (auto& str : characters) {
-		rsc[str] = newimage();
+		PIMAGE battlerImg = newimage();
+		PIMAGE chImg = newimage();
 		string battler = "Graphics/Battlers/" + str + ".png";
 		string tmpName = "Graphics/Characters/" + str + ".png";
-		getimage(rsc[str], tmpName.c_str());
+		getimage(chImg, tmpName.c_str());
+		getimage(battlerImg, battler.c_str());
 		string index = "battlers/" + str;
-		rsc[index] = newimage();
-		getimage(rsc[index], battler.c_str());
+
+		resrc.Insert(index, battlerImg);
+		resrc.Insert(str, chImg);
 	}
-	rsc["background"] = newimage();
-	getimage(rsc["background"],"Graphics/Background/background.jpg");
+	PIMAGE bk = newimage();
+	getimage(bk,"Graphics/Background/background.jpg");
+	string s = "background";
+	resrc.Insert(s,bk);
 }
 // 调用战斗场景
 void CallBattleScene(Role* role) {
@@ -63,9 +72,10 @@ void Release() {
 		PIMAGE pimg = iter.second;
 		delimage(pimg);
 	}
+	
 }
 PIMAGE getRsc(string key) {
-	return Global::rsc[key];
+	return Global::resrc.Find(key)->getVal();
 }
 int main()
 {
